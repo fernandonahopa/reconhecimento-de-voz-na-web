@@ -1,133 +1,133 @@
 <!DOCTYPE html>
-< html  lang = "pt-br" >
-  < cabeçalho >
-    < meta  charset = "utf-8"  / >
-    <title> Comandos de voz </title>​​​
-    < estilo >
-      corpo, html {
-        margem: 0;
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Speech Commands</title>
+    <style>
+      body, html {
+        margin: 0;
       }
  
       html {
-        altura: 100%;
+        height: 100%;
       }
  
-      corpo {
-        altura: herdar;
-        overflow: oculto;
-        largura máxima: 800px;
-        margem: 0 automático;
+      body {
+        height: inherit;
+        overflow: hidden;
+        max-width: 800px;
+        margin: 0 auto;
       }
  
       h1, p {
-        família-da-fonte: sem serifa;
-        alinhamento do texto: centralizado;
-        preenchimento: 15px;
+        font-family: sans-serif;
+        text-align: center;
+        padding: 15px;
       }
  
       .control {
-        altura: 100px;
-        estouro: automático;
-        posição: absoluta;
-        parte inferior: 0px;
-        direita: 0;
-        esquerda: 0;
-        cor de fundo: rgba(255,255,255,0.2);
-        alinhamento do texto: centralizado;
+        height: 100px;
+        overflow: auto;
+        position: absolute;
+        bottom: 0px;
+        right: 0;
+        left: 0;
+        background-color: rgba(255,255,255,0.2);
+        text-align: center;
       }
  
-      #caixa{
-        largura: 100px;
-        altura: 100px;
-        borda: 2px preta sólida;
-        raio da borda: 4px;
-        posição: absoluta;
-        esquerda: 300px;
-        topo:300px;
-        Transição: 2s superiores, 2s da esquerda;
+      #box{
+        width: 100px;
+        height: 100px;
+        border: 2px solid black;
+        border-radius: 4px;
+        position: absolute;
+        left: 300px;
+        top:300px;
+        transition: top 2s, left 2s;
       }
-    </style>​​​
-  </head>​​​
-  < corpo >
-    < h1 > Comandos por voz com a Web Speech API < / h1 >
-    < div  id = " box " > </div>
-    < p  class = "hints" > Use os comandos: 'azul', 'verde',
-      'vermelho', 'branco', 'mover para a direita',
-      'mover para a esquerda', 'mover para cima',
-      'mover para baixo'.' ' . </p>
-    < div  class = "control" >
-      < p  class = "output" >< em > ...Mensagens < / em >< / p >
-      < button  id = "btn-start" > Iniciar</button> " start " </button>
-      < botão  id = "btn-stop" > Parar " stop " </button>
-    <​​​    
-    < script >
+    </style>
+  </head>
+  <body>
+    <h1>Comandos por voz com a Web Speech API</h1>
+    <div id
+    < 
+      'vermelho', 'branco', 'mover para a direita', 
+      'mover para a esquerda', 'mover para cima', 
+      'mover para baixo'.
+    <div 
+      <p class="output"><em>...Mensagens</
+      <button id="btn-start">Iniciar
+      <button id="btn-stop">Parar
+    <    
+    <script>
       var x = 300;
       var y = 300;
-      var cor = 'branco';
+      var color = 'white';
  
       var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-      var reconhecimento = new SpeechRecognition();
-      reconhecimento.contínuo = verdadeiro;
+      var recognition = new SpeechRecognition();
+      recognition.continuous = true;
       recognition.lang = 'pt-BR';
-      reconhecimento.resultadosinterinos = falso;
-      reconhecimento.maxAlternativas = 1;
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
  
       var diagnostic = document.querySelector('.output');
       var box = document.querySelector('#box');
  
-      reconhecimento.onresultado = função(evento) {
+      recognition.onresult = function(event) { 
         
-        seja length = event.results.length;  
+        let length = event.results.length;  
         let command = event.results[length-1][0].transcript;
-        diagnostic.textContent = 'Resultado recebido: ' + comando + '.';
+        diagnostic.textContent = 'Resultado recebido: ' + command + '.';
  
-        if (command.toLowerCase().indexOf("") > -1){
+        if (command.toLowerCase().indexOf("direita") > -1){
           x += 50;
-          atualizarPropriedadesCaixa();
+          updateBoxProperties();
         }
-        senão se (comando.toLowerCase().indexOf("esquerda") > -1){
-          x == 50;
-          atualizarPropriedadesCaixa();
+        else if (command.toLowerCase().indexOf("esquerda") > -1){
+          x -= 50;
+          updateBoxProperties();
         }
-        senão se (comando.toLowerCase().indexOf("cima") > -1){
-          y = 50;
-          atualizarPropriedadesCaixa();
+        else if (command.toLowerCase().indexOf("cima") > -1){
+          y -= 50;
+          updateBoxProperties();
         }
-        senão se (comando.toLowerCase().indexOf("baixo") > -1){
+        else if (command.toLowerCase().indexOf("baixo") > -1){
           y += 50;
-          atualizarPropriedadesCaixa();
+          updateBoxProperties();
         }
-        senão se (comando.toLowerCase().indexOf("verde") > -1){
-          cor = 'verde';
-          atualizarPropriedadesCaixa();
+        else if (command.toLowerCase().indexOf("verde") > -1){
+          color = 'green';
+          updateBoxProperties();
         }
-        senão se (comando.toLowerCase().indexOf("azul") > -1){
-          cor = 'azul';
-          atualizarPropriedadesCaixa();
+        else if (command.toLowerCase().indexOf("azul") > -1){
+          color = 'blue';
+          updateBoxProperties();
         }
-        senão if (command.toLowerCase().indexOf("vermelho") > -1){
-          cor = 'vermelho';
-          atualizarPropriedadesCaixa();
+        else if (command.toLowerCase().indexOf("vermelho") > -1){
+          color = 'red';
+          updateBoxProperties();
         }
-        senão se (comando.toLowerCase().indexOf("branco") > -1){
-          cor = 'branco';
-          atualizarPropriedadesCaixa();
-        }
+        else if (command.toLowerCase().indexOf("branco") > -1){
+          color = 'white';
+          updateBoxProperties();
+        } 
       }
  
-      função atualizarPropriedadesCaixa(){
+      function updateBoxProperties(){
         box.style.left = x+"px";
         box.style.top = y+"px";
-        box.style.backgroundColor = cor;
+        box.style.backgroundColor = color;
       }
  
       document.querySelector('#btn-start').onclick = function() {
-        reconhecimento.iniciar();
+        recognition.start();
       }
  
       document.querySelector('#btn-stop').onclick = function() {
-        reconhecimento.parar();
+        recognition.stop();
       }
-    </script>​​​
-  </body>​​​
+    </script>
+  </body>
 </html>
